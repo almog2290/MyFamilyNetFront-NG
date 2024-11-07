@@ -1,0 +1,25 @@
+<div class="nav-container">
+    <p-menubar [model]="items">
+        <ng-template pTemplate="start">
+            <img src="assets/images/logo.jpg" width="70" height="75" alt="logo" class="logo" />
+        </ng-template>
+        <ng-template pTemplate="end">
+            <div class="profile-section" style="display: flex; align-items: center; gap: 1rem;">
+                <span class="greeting">Hello, {{userProfileInfo?.firstName || 'Guest'}}</span>
+                <p-avatar
+                    image = "https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+                    shape="circle"
+                > 
+                </p-avatar>
+                <p-menu #menu [popup]="true" [model]="profileItems"></p-menu>
+                <button 
+                    pButton 
+                    type="button" 
+                    (click)="menu.toggle($event)" 
+                    icon="pi pi-angle-down"
+                    class="p-button-text">
+                </button>
+            </div>
+        </ng-template>
+    </p-menubar>
+</div>

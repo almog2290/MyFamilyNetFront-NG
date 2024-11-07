@@ -1,0 +1,59 @@
+.nav-container {
+    .nav-start {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        background-color: #f8f9fa;
+
+        .logo {
+            height: 40px;
+            margin-right: 2rem;
+        }
+
+        .search-container {
+            flex: 1;
+            max-width: 300px;
+        }
+    }
+
+    ::ng-deep {
+        .p-menubar {
+            border: none;
+            border-radius: 0;
+            padding: 0.5rem 1rem;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+            .p-menubar-root-list {
+                gap: 1rem;
+            }
+
+            .p-menuitem-link {
+                padding: 0.75rem 1.25rem;
+                
+                &:hover {
+                    background-color: #f8f9fa;
+                }
+
+                .p-menuitem-icon {
+                    margin-right: 0.5rem;
+                }
+            }
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            .p-avatar {
+                cursor: pointer;
+                transition: transform 0.2s;
+
+                &:hover {
+                    transform: scale(1.05);
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,54 @@
+{
+    "pages":[
+            {
+              "posts": 0,
+              "followers": 0,
+              "createdAt": "2024-08-27T16:41:41.0418291",
+              "id": "44652ac9-0596-4152-8389-eb11eb5bdf1a",
+              "name": "Home maintenance and repairs",
+              "description": "The place to discuss home maintenance problems and solutions",
+              "logo": null,
+              "coverPhoto": null
+            },
+            {
+              "posts": 0,
+              "followers": 0,
+              "createdAt": "2024-08-25T16:16:08.6557845",
+              "id": "dce95439-73fc-4d2e-9be6-9f6d89e8485b",
+              "name": "Cooking",
+              "description": "Advice and discussion about weekly foods",
+              "logo": null,
+              "coverPhoto": null
+            },
+            {
+              "posts": 0,
+              "followers": 0,
+              "createdAt": "2024-08-25T16:15:51.6000913",
+              "id": "7f6a4b3b-52b9-4cf3-a5cf-52dc7beccd24",
+              "name": "Fashion consulting",
+              "description": "The place to discuss fashion",
+              "logo": null,
+              "coverPhoto": null
+            },
+            {
+              "posts": 2,
+              "followers": 0,
+              "createdAt": "2024-08-25T16:13:48.3820032",
+              "id": "d77f4e8c-f02c-42f3-bebe-f1ccd12e43ae",
+              "name": "Family Stories",
+              "description": "Speaking about family stuff",
+              "logo": null,
+              "coverPhoto": null
+            },
+            {
+              "posts": 1,
+              "followers": 0,
+              "createdAt": "2024-08-25T16:13:38.9116826",
+              "id": "d9c243f8-adc0-4eea-a9c7-b5326fa9ed09",
+              "name": "Technological consulting",
+              "description": "Speaking about tech stuff",
+              "logo": null,
+              "coverPhoto": null
+            }
+    ]
+}
