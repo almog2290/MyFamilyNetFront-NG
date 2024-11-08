@@ -1,5 +1,58 @@
-<p>catalog-page works!</p>
-<p *ngIf="page">{{page.id}}</p>
-<p *ngIf="page">{{page.name}}</p>
-<p *ngIf="page">{{page.description}}</p>
-<p *ngIf="page">{{page.createdAt}}</p>
+<div class="grid p-3" *ngIf="page">
+    <!-- Header Section -->
+    <div class="col-12">
+        <p-card styleClass="shadow-4 border-round-xl mb-3">
+            <ng-template pTemplate="header">
+                <img [src]="page.coverPhoto || 'assets/images/page.png'" 
+                     alt="Cover Photo"
+                     class="w-full border-round-top-xl"
+                     style="max-height: 200px; object-fit: cover;" />
+            </ng-template>
+            
+            <div class="flex align-items-center mb-3">
+                <img [src]="page.logo || 'assets/images/page.png'" 
+                     class="mr-3 border-circle" 
+                     style="width: 64px; height: 64px;" />
+                <div>
+                    <h2 class="text-xl font-bold m-0">{{page.name}}</h2>
+                    <p class="text-gray-700 m-0">{{page.description}}</p>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <div class="flex align-items-center">
+                    <i class="pi pi-users mr-2"></i>
+                    <span>{{page.followers}} followers</span>
+                </div>
+                <div class="flex align-items-center">
+                    <i class="pi pi-file mr-2"></i>
+                    <span>{{page.posts}} posts</span>
+                </div>
+            </div>
+        </p-card>
+    </div>
+
+    <!-- Posts Section -->
+    <div class="col-12">
+        <h3>Posts</h3>
+        <div class="grid">
+            <div class="col-12 md:col-6 lg:col-4" *ngFor="let post of posts">
+                <p-card [header]="post.title" 
+                        [subheader]="'Posted by ' + post.ownerName"
+                        styleClass="shadow-2 border-round-xl mb-3">
+                    <p>{{post.description}}</p>
+                    <ng-template pTemplate="footer">
+                        <div class="flex justify-content-between">
+                            <span>
+                                <i class="pi pi-heart mr-1"></i>{{post.likes}}
+                            </span>
+                            <span>
+                                <i class="pi pi-comments mr-1"></i>{{post.comments}}
+                            </span>
+                        </div>
+                    </ng-template>
+                </p-card>
+            </div>
+        </div>
+    </div>
+</div>

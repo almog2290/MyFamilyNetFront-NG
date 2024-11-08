@@ -18,6 +18,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { AvatarModule } from 'primeng/avatar';
 import { MenuModule } from 'primeng/menu';
 import { TooltipModule } from 'primeng/tooltip';
+import { DataViewModule } from 'primeng/dataview';
+import { RatingModule } from 'primeng/rating';
+import { TagModule } from 'primeng/tag';
 
 // Services
 import { KeycloakService } from './services/keycloak/keycloak.service';
@@ -50,7 +53,10 @@ export function kcFactory(kcService: KeycloakService) {
     InputTextModule,
     AvatarModule,
     MenuModule,
-    TooltipModule
+    TooltipModule,
+    DataViewModule,
+    RatingModule,
+    TagModule
   ],
   providers: [
     HttpClient,

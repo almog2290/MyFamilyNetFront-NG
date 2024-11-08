@@ -5,8 +5,8 @@ export interface Post {
     description: string,
     edited: boolean,
     createdAt: Date,
-    postId: number,
-    pageId: number,
+    postId: string,
+    pageId: string,
     ownerName: string,
     title: string,
     logo: string
