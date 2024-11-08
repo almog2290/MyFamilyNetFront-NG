@@ -41,6 +41,10 @@ export class KeycloakService {
     }
   }
 
+  register(): Promise<void> {
+    return this.keycloak?.register();
+  }
+
   login(): Promise<void> {
     return this.keycloak?.login();
   }

@@ -49,10 +49,16 @@ export class NavMenuComponent implements OnInit {
     else {
       this.userProfileInfo = undefined;
       this.profileItems = [
-        {label: 'Login', icon: 'pi pi-sign-in', command: () => this.login()}
+        {label: 'Login', icon: 'pi pi-sign-in', command: () => this.login()},
+        {label: 'Register', icon: 'pi pi-user', command: () => this.register()}
       ];
     }      
   }
+
+  async register() {
+    await this.keycloakService.register();
+  }
+
 
   async login() {
     await this.keycloakService.login();

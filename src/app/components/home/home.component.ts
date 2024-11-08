@@ -1,6 +1,9 @@
 import { Component , inject } from '@angular/core';
-import { Page } from '../../models/page';
+import { Router } from '@angular/router';
 import { PageService } from '../../services/page.service';
+import { Page } from '../../models/page';
+
+
 
 @Component({
   selector: 'app-home',
@@ -10,11 +13,16 @@ import { PageService } from '../../services/page.service';
 export class HomeComponent {
   pageList: Page[] = [];
   pageService: PageService = inject(PageService);
+  router: Router = inject(Router);
 
   constructor() {
-    this.pageService.getAllPages()
-    .then((pages) => {
+    this.pageService.getAllPages(0,6)
+    .subscribe((pages) => {
       this.pageList = pages;
     });
+  }
+
+  viewPage(page: Page) {
+    this.router.navigate(['/catalog-page'], { queryParams: { page: JSON.stringify(page) } });
   }
 }

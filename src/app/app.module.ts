@@ -22,6 +22,8 @@ import { TooltipModule } from 'primeng/tooltip';
 // Services
 import { KeycloakService } from './services/keycloak/keycloak.service';
 import { HttpTokenInterceptorService } from './services/interceptor/http-token-interceptor.service';
+import { CatalogPageComponent } from './components/catalog-page/catalog-page.component';
+
 
 
 export function kcFactory(kcService: KeycloakService) {
@@ -33,7 +35,8 @@ export function kcFactory(kcService: KeycloakService) {
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    RecomendedComponent
+    RecomendedComponent,
+    CatalogPageComponent
   ],
   imports: [
     BrowserModule,

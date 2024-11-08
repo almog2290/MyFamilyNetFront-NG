@@ -1,21 +1,24 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Page } from '../models/page';
+import { environment } from '../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PageService {
-  url = 'http://localhost:3000/pages';
+  url= `${environment.apiUrl}/social/public/pages`;
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-  async getAllPages(): Promise<Page[]> {
-    const response = await fetch(this.url); 
-    return await response.json() ?? [];
+  getAllPages(offset: number , size: number): Observable<Page[]> {
+    const reponse = this.http.get<Page[]>(`${this.url}?page=${offset}&size=${size}`);
+    return reponse ?? [];
   }
 
-  async getPageById(id: string): Promise<Page | undefined> {
-    const response = await fetch(`${this.url}/${id}`);
-    return await response.json() ?? {};
+  getPageById(id: string): Observable<Page | undefined> {
+    const response = this.http.get<Page>(`${this.url}/${id}`);
+    return response ?? {};
   }
 }
