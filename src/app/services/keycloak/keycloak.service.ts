@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable , inject } from '@angular/core';
+import { Router } from '@angular/router';
 import Keycloak from 'keycloak-js';
 import { KeycloakProfile } from 'keycloak-js';
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,7 @@ export class KeycloakService {
   private _keycloak: Keycloak | undefined;
   private _profile:  KeycloakProfile | undefined;
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   get keycloak(){
 
@@ -46,7 +48,7 @@ export class KeycloakService {
       try {
         await this.keycloak.updateToken(30); // Refresh the token if it will expire in less than 30 seconds
       } catch (error) {
-        await this.login();   // Redirect to login if token refresh fails
+        this.router.navigate(['/']); // Redirect to the homepage
       }
     }
   }

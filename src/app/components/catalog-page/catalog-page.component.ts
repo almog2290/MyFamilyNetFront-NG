@@ -13,12 +13,16 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
   providers: [DialogService]
 })
 export class CatalogPageComponent implements OnInit, OnDestroy {
-  route: ActivatedRoute = inject(ActivatedRoute);
-  postService: PostService = inject(PostService);
-  dialogService = inject(DialogService);
   page: Page | undefined;
   posts: Post[] = [];
   dialogRef: DynamicDialogRef | undefined;
+  editingPost: Post | undefined;
+
+  constructor(
+    private route: ActivatedRoute,
+    private postService: PostService,
+    private dialogService: DialogService,
+  ) {}
   
 
   ngOnInit() {
@@ -33,7 +37,9 @@ export class CatalogPageComponent implements OnInit, OnDestroy {
   private loadPagePosts() {
     if (this.page) {
       this.postService.getAllPostsByPageId(this.page.id, 0, 10)
-      .subscribe(posts => this.posts = posts);
+      .subscribe(posts=> {
+        this.posts = posts;
+      });
     }
   }
 
@@ -50,6 +56,26 @@ export class CatalogPageComponent implements OnInit, OnDestroy {
       baseZIndex: 10000,
       styleClass: 'comments-dialog'
     });
+  }
+
+  startEdit(post: Post) {
+    this.editingPost = { ...post };
+  }
+
+  saveEdit() {
+    if (this.editingPost) {
+      this.postService.updatePost(this.editingPost.postId, this.editingPost)
+      .subscribe(response => {
+        if (response.status === 201) {
+          this.loadPagePosts();
+        }
+       });
+      this.editingPost = undefined;
+    }
+  }
+
+  cancelEdit() {
+    this.editingPost = undefined;
   }
 
   ngOnDestroy() {
