@@ -8,6 +8,7 @@ export interface Post {
     postId: string,
     pageId: string,
     ownerName: string,
+    ownerId: string,
     title: string,
     logo: string
 }
