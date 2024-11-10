@@ -3,12 +3,15 @@ import { HTTP_INTERCEPTORS, HttpClient ,HttpClientModule } from '@angular/common
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app.route.module';
+import { FormsModule } from '@angular/forms'; 
 
 // Components
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
 import { HomeComponent } from './components/home/home.component';
 import { RecomendedComponent } from './components/recomended/recomended.component';
+import { CatalogPageComponent } from './components/catalog-page/catalog-page.component';
+import { CommentsDialogComponent } from './components/comments-dialog/comments-dialog.component';
 
 // PrimeNG Imports
 import { CardModule } from 'primeng/card';
@@ -21,11 +24,13 @@ import { TooltipModule } from 'primeng/tooltip';
 import { DataViewModule } from 'primeng/dataview';
 import { RatingModule } from 'primeng/rating';
 import { TagModule } from 'primeng/tag';
+import { DialogModule } from 'primeng/dialog';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 // Services
 import { KeycloakService } from './services/keycloak/keycloak.service';
 import { HttpTokenInterceptorService } from './services/interceptor/http-token-interceptor.service';
-import { CatalogPageComponent } from './components/catalog-page/catalog-page.component';
 
 
 
@@ -39,12 +44,14 @@ export function kcFactory(kcService: KeycloakService) {
     NavMenuComponent,
     HomeComponent,
     RecomendedComponent,
-    CatalogPageComponent
+    CatalogPageComponent,
+    CommentsDialogComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,    
     BrowserAnimationsModule,
+    FormsModule,
     HttpClientModule,
     // PrimeNG Modules
     CardModule,
@@ -56,7 +63,10 @@ export function kcFactory(kcService: KeycloakService) {
     TooltipModule,
     DataViewModule,
     RatingModule,
-    TagModule
+    TagModule, 
+    DialogModule,
+    DynamicDialogModule,
+    InputTextareaModule
   ],
   providers: [
     HttpClient,

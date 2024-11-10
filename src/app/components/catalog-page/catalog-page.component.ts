@@ -1,20 +1,25 @@
-import { Component , inject , OnInit } from '@angular/core';
+import { Component , inject , OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PageService } from '../../services/page.service';
+import { PostService } from '../../services/post.service';
 import { Page } from '../../models/page';
 import { Post } from '../../models/post';
-
+import { CommentsDialogComponent } from '../comments-dialog/comments-dialog.component';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-catalog-page',
   templateUrl: './catalog-page.component.html',
-  styleUrl: './catalog-page.component.css'
+  styleUrl: './catalog-page.component.css',
+  providers: [DialogService]
 })
-export class CatalogPageComponent implements OnInit {
+export class CatalogPageComponent implements OnInit, OnDestroy {
   route: ActivatedRoute = inject(ActivatedRoute);
-  pageService: PageService = inject(PageService);
+  postService: PostService = inject(PostService);
+  dialogService = inject(DialogService);
   page: Page | undefined;
   posts: Post[] = [];
+  dialogRef: DynamicDialogRef | undefined;
+  
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -27,34 +32,29 @@ export class CatalogPageComponent implements OnInit {
 
   private loadPagePosts() {
     if (this.page) {
-      this.posts = [
-        {
-          likes: 0,
-          comments: 1,
-          followers: 0,
-          description: "Which is the funniest childhood story of ours",
-          edited: false,
-          createdAt: new Date("2024-08-25T16:32:01.0266199"),
-          postId: "08a2f647-19e9-46a3-9030-8f461b3d9632",
-          pageId: "d77f4e8c-f02c-42f3-bebe-f1ccd12e43ae",
-          ownerName: "Almog Madar",
-          title: "Family Stories",
-          logo: ""
-        },
-        {
-          likes: 0,
-          comments: 1,
-          followers: 0,
-          description: "Which is the funniest childhood story of ours",
-          edited: false,
-          createdAt: new Date("2024-08-25T16:32:01.0266199"),
-          postId: "08a2f647-19e9-46a3-9030-8f461b3d9632",
-          pageId: "d77f4e8c-f02c-42f3-bebe-f1ccd12e43ae",
-          ownerName: "Almog Madar",
-          title: "Family Stories",
-          logo: ""
-        },
-      ];
+      this.postService.getAllPostsByPageId(this.page.id, 0, 10)
+      .subscribe(posts => this.posts = posts);
+    }
+  }
+
+  showComments(post: Post) {
+    this.dialogRef = this.dialogService.open(CommentsDialogComponent, {
+      header: 'Comments',
+      width: '100%',
+      height: '75%',
+      position: 'bottom',
+      modal: true,
+      data: {
+        postId: post.postId
+      },
+      baseZIndex: 10000,
+      styleClass: 'comments-dialog'
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.dialogRef) {
+      this.dialogRef.close();
     }
   }
 

@@ -1,0 +1,35 @@
+<div class="comments-container">
+    <div class="comments-list">
+      <div *ngFor="let comment of comments" class="comment-item p-2 border-bottom-1 border-gray-200">
+        <div class="flex align-items-start">
+          <img [src]="'assets/images/user.png'"
+               class="mr-3 border-circle" 
+               style="width: 32px; height: 32px;">
+          <div>
+            <div class="font-bold" style="font-size: 0.875rem;">{{comment.owner.name}}</div>
+            <div class="comment-content" style="font-size: 0.875rem;">{{comment.comment}}</div>
+            <small class="text-gray-600" style="font-size: 0.75rem;">
+              {{comment.createdAt | date:'short'}}
+              <span *ngIf="comment.edited" class="ml-2">(edited)</span>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-input p-2 border-top-1 border-gray-200">
+        <textarea pInputTextarea 
+               placeholder="Write a comment..." 
+               style="font-size: 0.875rem; resize: none; overflow-y: auto; min-height: 40px; max-height: 120px; width: 100%; border-radius: 6px;"
+               [(ngModel)]="newComment" 
+               (keyup.enter)="$event.preventDefault(); addComment()"
+               autoResize="true">
+        </textarea>
+        <button type="button" pButton 
+                style="font-size: 0.875rem; width: 100%; margin-top: 0.5rem; height: 40px;"
+                (click)="addComment()"
+                [disabled]="!newComment.trim()">
+                <i class="pi pi-send mr-2"></i>
+                Send
+        </button>
+    </div>
+</div>

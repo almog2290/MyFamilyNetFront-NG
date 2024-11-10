@@ -1,0 +1,24 @@
+.comments-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.comments-list {
+flex: 1;
+overflow-y: auto;
+}
+.comment-input {
+position: sticky;
+bottom: 0;
+background: white;
+}
+.comments-dialog .p-dialog-content {
+padding: 0 !important;
+}
+
+.comments-dialog .p-dialog {
+    margin: 0;
+    max-height: 75vh;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}

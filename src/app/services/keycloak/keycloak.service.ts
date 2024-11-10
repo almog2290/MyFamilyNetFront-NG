@@ -41,6 +41,16 @@ export class KeycloakService {
     }
   }
 
+  async updateToken(): Promise<void> {
+    if (this.keycloak) {
+      try {
+        await this.keycloak.updateToken(30); // Refresh the token if it will expire in less than 30 seconds
+      } catch (error) {
+        await this.login();   // Redirect to login if token refresh fails
+      }
+    }
+  }
+
   register(): Promise<void> {
     return this.keycloak?.register();
   }
