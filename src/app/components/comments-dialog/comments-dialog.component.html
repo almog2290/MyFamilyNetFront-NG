@@ -22,13 +22,17 @@
                placeholder="Write a comment..." 
                style="font-size: 0.875rem; resize: none; overflow-y: auto; min-height: 40px; max-height: 120px; width: 100%; border-radius: 6px;"
                [(ngModel)]="newComment" 
-               (keyup.enter)="$event.preventDefault(); addComment()"
+               (keyup.enter)="$event.preventDefault(); !isSubmitting && addComment()"
+               [disabled]="isSubmitting"
                autoResize="true">
         </textarea>
         <button type="button" pButton 
                 style="font-size: 0.875rem; width: 100%; margin-top: 0.5rem; height: 40px;"
+                [loading]="isSubmitting"
+                [disabled]="!newComment.trim() || isSubmitting"
                 (click)="addComment()"
-                [disabled]="!newComment.trim()">
+                (keyup.enter)="addComment()"
+                >
                 <i class="pi pi-send mr-2"></i>
                 Send
         </button>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { Comment } from '../../models/comment';
 import { CommentService } from '../../services/comment.service';
+import { finalize, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-comments-dialog',
@@ -12,6 +13,7 @@ export class CommentsDialogComponent implements OnInit {
   comments: Comment[] = [];
   newComment: string = '';
   postId: string;
+  isSubmitting = false;
 
   constructor(
     private config: DynamicDialogConfig,
@@ -26,18 +28,30 @@ export class CommentsDialogComponent implements OnInit {
 
   private loadComments() {
     this.commentService.getCommentsByPostId(this.postId, 0, 10)
-      .subscribe(comments => {
-        this.comments = comments;
-      });
+    .subscribe(comments => {
+      this.comments = comments;
+    });
   }
 
-  addComment() {
-    if (this.newComment.trim()) {
-      this.commentService.addComment( this.postId, this.newComment)
-        .subscribe(comment => {
-          this.comments.unshift(comment);
-          this.newComment = '';
-        });
-    }
+  async addComment() {
+    if (!this.newComment?.trim() || this.isSubmitting) return;
+
+    this.isSubmitting = true;
+    this.commentService.addComment(this.postId, this.newComment).pipe(
+      // After adding comment, load the updated comments
+      switchMap(() => this.commentService.getCommentsByPostId(this.postId, 0, 10)),
+      // Handle final tasks whether success or error
+      finalize(() => {
+        this.isSubmitting = false;
+      })
+    ).subscribe({
+      next: (comments: Comment[]) => {
+        this.comments = comments;
+        this.newComment = '';
+      },
+      error: (error) => {
+        console.error('Error adding comment:', error);
+      }
+    });
   }
 }
