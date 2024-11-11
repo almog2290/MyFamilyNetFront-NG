@@ -27,6 +27,8 @@ import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { FieldsetModule } from 'primeng/fieldset';
+import { DividerModule } from 'primeng/divider';
 
 // Services
 import { KeycloakService } from './services/keycloak/keycloak.service';
@@ -66,7 +68,9 @@ export function kcFactory(kcService: KeycloakService) {
     TagModule, 
     DialogModule,
     DynamicDialogModule,
-    InputTextareaModule
+    InputTextareaModule,
+    FieldsetModule,
+    DividerModule
   ],
   providers: [
     HttpClient,

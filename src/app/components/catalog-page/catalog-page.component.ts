@@ -89,6 +89,10 @@ export class CatalogPageComponent implements OnInit, OnDestroy {
     this.editingPost = undefined;
   }
 
+  likePost(post: Post) {
+    console.log('Like post');
+  }
+
   ngOnDestroy() {
     if (this.dialogRef) {
       this.dialogRef.close();

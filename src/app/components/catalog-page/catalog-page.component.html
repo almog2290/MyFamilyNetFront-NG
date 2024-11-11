@@ -36,22 +36,21 @@
     <div class="col-12">
         <h3>Posts</h3>
         <div class="flex flex-column gap-3">
-            <p-card *ngFor="let post of posts" 
-                    styleClass="shadow-2 border-round-xl w-full">
-                <div class="flex align-items-center mb-3">
-                    <img [src]="post.logo || 'assets/images/userPost.png'" 
-                         class="mr-3 border-circle" 
-                         style="width: 48px; height: 48px;" />
-                    <div class="flex-grow-1">
-                        <h4 class="m-0 font-bold">{{post.ownerName}}</h4>
-                        <small class="text-gray-600">{{post.createdAt | date:'medium'}}</small>
+            <p-fieldset [toggleable]="true"  *ngFor="let post of posts" styleClass="shadow-2 border-round-xl">
+                <ng-template pTemplate="header">
+                    <div class="flex align-items-center gap-2 px-2 w-full">
+                        <p-avatar [image]="post.logo || 'assets/images/userPost.png'" shape="circle" />
+                        <div class="flex-grow-1">
+                            <span class="font-bold">{{post.ownerName}}</span>
+                            <div><small class="text-gray-600">{{post.createdAt | date:'medium'}}</small></div>
+                        </div>
+                        <button pButton
+                                icon="pi pi-pencil"
+                                class="p-button-rounded p-button-text"
+                                (click)="startEdit(post)">
+                        </button>
                     </div>
-                    <button pButton
-                            icon="pi pi-pencil"
-                            class="p-button-rounded p-button-text"
-                            (click)="startEdit(post)">
-                    </button>
-                </div>
+                </ng-template>
 
                 <div *ngIf="editingPost?.postId === post.postId; else normalContent">
                     <textarea pInputTextarea
@@ -70,30 +69,41 @@
 
                 <ng-template #normalContent>
                     <p class="m-0 line-height-3">{{post.description}}</p>
-                </ng-template>
-
-                <div class="flex justify-content-between mt-4 pt-3 border-top-1 border-gray-200">
-                    <div class="flex align-items-center gap-4">
-                        <div class="flex align-items-center">
-                            <span class="mr-2">Likes</span>
-                            <button pButton 
-                                    class="p-button-text p-button-rounded"
-                                    icon="pi pi-heart" 
-                                    [label]="post.likes.toString()">
-                            </button>
+                    <!-- Stats Line -->
+                    <div class="flex mt-4 mb-2">
+                        <div class="flex align-items-center mr-4">
+                            <i class="pi pi-thumbs-up-fill mr-1 text-blue-500"></i>
+                            <span>{{post.likes}} 
+                                <span class="text-sm">Likes</span>
+                            </span>
                         </div>
-                        <div class="flex align-items-center">
-                            <span class="mr-2">Comments</span>
-                            <button pButton 
-                                    class="p-button-text p-button-rounded"
-                                    icon="pi pi-comments" 
-                                    [label]="post.comments.toString()"
-                                    (click)="showComments(post)">
-                            </button>
+                        <div class="flex align-items-center mr-4">
+                            <i class="pi pi-comments mr-1 text-blue-500"></i>
+                            <span>{{post.comments}} 
+                                <span class="text-sm">Comments</span>
+                            </span>
                         </div>
+                    </div>  
+                    <p-divider/>
+                    <!-- Action Buttons -->
+                    <div class="flex">
+                        <button pButton 
+                                label="Like"
+                                icon="pi pi-thumbs-up"
+                                class="p-button-rounded p-button-text"
+                                severity="contrast"
+                                (click)="likePost(post)">
+                        </button>
+                        <button pButton 
+                                label="Comment"
+                                icon="pi pi-comment"
+                                class="p-button-rounded p-button-text"
+                                severity="contrast"
+                                (click)="showComments(post)">
+                        </button>
                     </div>
-                </div>
-            </p-card>
+                </ng-template>
+            </p-fieldset>
         </div>
     </div>
 </div>
