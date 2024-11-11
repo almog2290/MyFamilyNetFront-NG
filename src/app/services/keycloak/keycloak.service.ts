@@ -31,6 +31,10 @@ export class KeycloakService {
     return this._profile
   }
 
+  get myUserId(): string | undefined {
+    return this._profile?.id;
+  }
+
   async init() {
     
     const authenticated : boolean = await this.keycloak?.init({

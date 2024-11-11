@@ -45,6 +45,7 @@
                             <div><small class="text-gray-600">{{post.createdAt | date:'medium'}}</small></div>
                         </div>
                         <button pButton
+                                *ngIf="isPostOwner(post)"
                                 icon="pi pi-pencil"
                                 class="p-button-rounded p-button-text"
                                 (click)="startEdit(post)">

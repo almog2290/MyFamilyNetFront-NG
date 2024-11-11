@@ -1,6 +1,7 @@
 import { Component , inject , OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PostService } from '../../services/post.service';
+import { KeycloakService } from '../../services/keycloak/keycloak.service';
 import { Page } from '../../models/page';
 import { Post } from '../../models/post';
 import { CommentsDialogComponent } from '../comments-dialog/comments-dialog.component';
@@ -21,7 +22,8 @@ export class CatalogPageComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private postService: PostService,
-    private dialogService: DialogService,
+    private keycloakService: KeycloakService,
+    private dialogService: DialogService
   ) {}
   
 
@@ -41,6 +43,10 @@ export class CatalogPageComponent implements OnInit, OnDestroy {
         this.posts = posts;
       });
     }
+  }
+
+  isPostOwner(post: Post): boolean {  
+    return this.keycloakService.myUserId === post.ownerId;
   }
 
   showComments(post: Post) {
