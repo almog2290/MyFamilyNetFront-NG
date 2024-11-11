@@ -56,6 +56,17 @@ export class CatalogPageComponent implements OnInit, OnDestroy {
       baseZIndex: 10000,
       styleClass: 'comments-dialog'
     });
+
+    if (this.dialogRef) {
+      this.dialogRef.onChildComponentLoaded.subscribe((component: CommentsDialogComponent) => {
+        component.commentAdded.subscribe(() => {
+          const index = this.posts.findIndex(p => p.postId === post.postId);
+          if (index !== -1) {
+            this.posts[index].comments++;
+          }
+        });
+      });
+    }
   }
 
   startEdit(post: Post) {

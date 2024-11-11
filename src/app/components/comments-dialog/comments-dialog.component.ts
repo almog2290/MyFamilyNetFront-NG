@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { Component, OnInit , EventEmitter } from '@angular/core';
+import { DynamicDialogConfig , DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Comment } from '../../models/comment';
 import { CommentService } from '../../services/comment.service';
 import { finalize, switchMap } from 'rxjs/operators';
@@ -14,10 +14,12 @@ export class CommentsDialogComponent implements OnInit {
   newComment: string = '';
   postId: string;
   isSubmitting = false;
+  commentAdded = new EventEmitter<void>();
 
   constructor(
     private config: DynamicDialogConfig,
-    private commentService: CommentService 
+    private ref: DynamicDialogRef,
+    private commentService: CommentService,
   ) {
     this.postId = this.config.data.postId;
   }
@@ -33,7 +35,7 @@ export class CommentsDialogComponent implements OnInit {
     });
   }
 
-  async addComment() {
+  addComment() {
     if (!this.newComment?.trim() || this.isSubmitting) return;
 
     this.isSubmitting = true;
@@ -48,6 +50,7 @@ export class CommentsDialogComponent implements OnInit {
       next: (comments: Comment[]) => {
         this.comments = comments;
         this.newComment = '';
+        this.commentAdded.emit();
       },
       error: (error) => {
         console.error('Error adding comment:', error);
