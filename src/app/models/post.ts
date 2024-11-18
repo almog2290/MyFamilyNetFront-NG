@@ -9,6 +9,7 @@ export interface Post {
     pageId: string,
     ownerName: string,
     ownerId: string,
+    isLikedByME : boolean,
     title: string,
     logo: string
 }

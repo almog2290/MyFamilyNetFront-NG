@@ -6,13 +6,42 @@
           <img [src]="'assets/images/userComment.png'"
                class="mr-3 border-circle" 
                style="width: 32px; height: 32px;">
-          <div>
+          <div class="flex-grow-1">
             <div class="font-bold" style="font-size: 0.875rem;">{{comment.owner.name}}</div>
-            <div class="comment-content" style="font-size: 0.875rem;">{{comment.comment}}</div>
-            <small class="text-gray-600" style="font-size: 0.75rem;">
-              {{comment.createdAt | date:'short'}}
-              <span *ngIf="comment.edited" class="ml-2">(edited)</span>
-            </small>
+            <ng-container *ngIf="editingCommentId !== comment.commentId; else editMode">
+              <div class="comment-content" style="font-size: 0.875rem;">{{comment.comment}}</div>
+              <small class="text-gray-600" style="font-size: 0.75rem;">
+                {{comment.createdAt | date:'short'}}
+                <span *ngIf="comment.edited" class="ml-2">(edited)</span>
+              </small>
+              <div *ngIf="comment.owner.id === currentUserId" 
+                   class="flex gap-2 mt-2">
+                <button pButton 
+                        class="p-button-text p-button-rounded p-button-sm"
+                        icon="pi pi-pencil"
+                        (click)="startEditing(comment)">
+                </button>
+                <button pButton 
+                        class="p-button-text p-button-rounded p-button-danger p-button-sm"
+                        icon="pi pi-trash"
+                        (click)="deleteComment(comment.commentId)">
+                </button>
+              </div>
+            </ng-container>
+            <ng-template #editMode>
+              <div class="edit-comment-container" style="width: 100%;">
+                <textarea pInputTextarea
+                         [(ngModel)]="editCommentText"
+                         autoResize="true"
+                         [style]="{width: '100%', 'min-height': '60px', 'max-height': '150px'}"
+                         class="edit-comment-textarea">
+                </textarea>
+                <div class="mt-2">
+                  <button pButton class="p-button-sm p-button-text" (click)="saveEdit(comment.commentId)">Save</button>
+                  <button pButton class="p-button-sm p-button-text p-button-secondary" (click)="cancelEditing()">Cancel</button>
+                </div>
+              </div>
+            </ng-template>
           </div>
         </div>
       </div>

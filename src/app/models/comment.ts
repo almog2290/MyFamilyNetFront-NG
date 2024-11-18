@@ -5,7 +5,7 @@ export interface Comment {
     edited: boolean,
     createdAt: Date,
     updatedAt: Date,
-    commentId: number,
-    postId: number,
+    commentId: string,
+    postId: string,
     owner : User
 }
