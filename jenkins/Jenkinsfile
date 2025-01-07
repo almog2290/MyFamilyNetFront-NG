@@ -1,0 +1,61 @@
+pipeline{
+    agent {
+        label 'ubuntu'
+    }
+    environment {
+        APP_NAME = 'my-family-net-front-ng'
+        DOCKER_REGISTRY = "registry.moglidev.xyz"
+        DOCKER_AUTH = 'moglidev-registry-cred' 
+        IMAGE_NAME = "${DOCKER_REGISTRY}/${APP_NAME}"
+    }
+    stages{
+        stage('Cleanup workspace'){
+            steps{
+                cleanWs()
+            }
+        }
+        stage('Checkout for SCM'){
+            steps{
+                git branch: 'main', credentialsId: 'gitea-jenkins', url: 'https://gitea.moglidev.xyz/mamba/MyFamilyNetFront-NG.git'
+            }
+        }
+        stage('Extract Version from package.json'){
+            steps{
+                script {
+                    env.RELEASE_VERSION = sh(script: "jq -r '.version' package.json", returnStdout: true).trim()
+                    sh "echo 'Release version is => ${env.RELEASE_VERSION}' "
+                    env.IMAGE_TAG = "${RELEASE_VERSION}-${BUILD_NUMBER}"
+                    sh "echo 'Image tag is => ${env.IMAGE_TAG}'"
+                }
+            }
+        }
+        stage('Build'){
+            steps{
+                script{
+                    nodejs('NodeJS-23.5') {
+                        sh 'npm install'
+                        sh 'npm run build --prod'
+                    }
+                }
+            }
+        }
+        // stage('Build & Push Docker Image'){
+        //  steps{
+        //     script {
+        //         docker.withRegistry("https://${DOCKER_REGISTRY}", DOCKER_AUTH) {
+
+        //             // Buildx (Builder instance)
+        //             sh 'docker buildx create --name mybuilder-frontend --driver docker-container --use'
+        //             sh 'docker buildx inspect mybuilder-frontend --bootstrap'
+
+        //             // Build and push multi-architecture images
+        //             sh 'docker buildx build --platform linux/amd64,linux/arm64 -t ${IMAGE_NAME}:${IMAGE_TAG} -t ${IMAGE_NAME}:latest -f docker/Dockerfile . --push'
+                    
+        //             // Remove the builder instance
+        //             sh 'docker buildx rm'
+        //         }
+        //     }
+        //  }
+        // }
+    }
+}
