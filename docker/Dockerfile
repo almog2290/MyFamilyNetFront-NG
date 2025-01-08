@@ -14,6 +14,6 @@ FROM nginx:alpine
 
 COPY --from=build-stage /app/docker/nginx.conf /etc/nginx/nginx.conf
 
-COPY --from=build-stage /app/dist/my-family-net-front-ng/browser /usr/share/nginx/html
+COPY --from=build-stage /app/dist/my-family-net-front-ng /usr/share/nginx/html
 
 EXPOSE 80
