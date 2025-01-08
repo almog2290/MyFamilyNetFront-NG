@@ -2,11 +2,23 @@ pipeline{
     agent {
         label 'ubuntu'
     }
+    parameters {
+        string(name: 'APP_URL', defaultValue: 'http://40.0.0.84', description: 'Application URL')
+        string(name: 'APP_API_IP', defaultValue: 'http://api-gateway-svc.my-family-net.svc.cluster.local', description: 'API Gateway IP')
+        string(name: 'APP_KEYCLOAK_URL', defaultValue: 'https://keycloakmyfamilynet.local.moglidev.xyz', description: 'Keycloak URL')
+        string(name: 'APP_KEYCLOAK_REALM', defaultValue: 'my-family-net', description: 'Keycloak Realm')
+        string(name: 'APP_KEYCLOAK_CLIENT_ID', defaultValue: 'my-family-net-app', description: 'Keycloak Client ID')
+    }
     environment {
         APP_NAME = 'my-family-net-front-ng'
         DOCKER_REGISTRY = "registry.moglidev.xyz"
         DOCKER_AUTH = 'moglidev-registry-cred' 
         IMAGE_NAME = "${DOCKER_REGISTRY}/${APP_NAME}"
+        APP_URL = "${params.APP_URL}"
+        APP_API_IP = "${params.APP_API_IP}"
+        APP_KEYCLOAK_URL = "${params.APP_KEYCLOAK_URL}"
+        APP_KEYCLOAK_REALM = "${params.APP_KEYCLOAK_REALM}"
+        APP_KEYCLOAK_CLIENT_ID = "${params.APP_KEYCLOAK_CLIENT_ID}"
     }
     stages{
         stage('Cleanup workspace'){
@@ -62,6 +74,17 @@ pipeline{
                         sh 'docker buildx inspect mybuilder-frontend --bootstrap'
 
                         // Build and push multi-architecture images
+                        sh """
+                        docker buildx build --platform linux/amd64,linux/arm64 \
+                        --build-arg APP_URL=${APP_URL} \
+                        --build-arg APP_API_IP=${APP_API_IP} \
+                        --build-arg APP_KEYCLOAK_URL=${APP_KEYCLOAK_URL} \
+                        --build-arg APP_KEYCLOAK_REALM=${APP_KEYCLOAK_REALM} \
+                        --build-arg APP_KEYCLOAK_CLIENT_ID=${APP_KEYCLOAK_CLIENT_ID} \
+                        -t ${IMAGE_NAME}:${IMAGE_TAG} -t ${IMAGE_NAME}:latest -f docker/Dockerfile . --push
+                        """
+
+
                         sh 'docker buildx build --platform linux/amd64,linux/arm64 -t ${IMAGE_NAME}:${IMAGE_TAG} -t ${IMAGE_NAME}:latest -f docker/Dockerfile . --push'
                         
                         // Remove the builder instance
