@@ -83,13 +83,20 @@ pipeline{
                         --build-arg APP_KEYCLOAK_CLIENT_ID=${APP_KEYCLOAK_CLIENT_ID} \
                         -t ${IMAGE_NAME}:${IMAGE_TAG} -t ${IMAGE_NAME}:latest -f docker/Dockerfile . --push
                         """
-
-
-                        sh 'docker buildx build --platform linux/amd64,linux/arm64 -t ${IMAGE_NAME}:${IMAGE_TAG} -t ${IMAGE_NAME}:latest -f docker/Dockerfile . --push'
-                        
+                                                
                         // Remove the builder instance
                         sh 'docker buildx rm'
                     }
+                }
+            }
+        }
+        stage("Trigger CD (Gitops) Pipeline") {
+            steps {
+                script {
+                    build job: 'myfamilynet-front-ng-gitops-cd', 
+                        parameters: [string(name: 'IMAGE_TAG', value: "${IMAGE_TAG}" , description: 'Docker Image Version')], 
+                        propagate: false, 
+                        wait: false
                 }
             }
         }
