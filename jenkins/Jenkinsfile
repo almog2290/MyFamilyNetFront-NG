@@ -4,7 +4,7 @@ pipeline{
     }
     parameters {
         string(name: 'APP_URL', defaultValue: 'http://40.0.0.84', description: 'Application URL')
-        string(name: 'APP_API_IP', defaultValue: 'http://api-gateway-svc.my-family-net.svc.cluster.local', description: 'API Gateway IP')
+        string(name: 'APP_API_IP', defaultValue: '/api', description: 'API Gateway IP')
         string(name: 'APP_KEYCLOAK_URL', defaultValue: 'https://keycloakmyfamilynet.local.moglidev.xyz', description: 'Keycloak URL')
         string(name: 'APP_KEYCLOAK_REALM', defaultValue: 'my-family-net', description: 'Keycloak Realm')
         string(name: 'APP_KEYCLOAK_CLIENT_ID', defaultValue: 'my-family-net-app', description: 'Keycloak Client ID')
